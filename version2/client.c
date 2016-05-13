@@ -5,7 +5,7 @@ volatile int misses = 0;
 
 void missed_alarm(int signum) {
 	    /* we missed a timer signal, so won't be sending packets fast enough!!! */
-	    write(2, "Missed Alarm!\n", 14);
+	    //write(2, "Missed Alarm!\n", 14);
 	    ++misses;
 }
 
@@ -152,37 +152,9 @@ int main(int argc, char* argv[]){
 	}
 	
 	gettimeofday(&stop, NULL);
+	
 	printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
 	printf("Number of missed alarms: %d\n", misses);
-	
-	/*while(sending_time--){
-		gettimeofday(&start, NULL);
-		while( pps > pnumber ){
-			gettimeofday(&start2, NULL);
-
-			++pnumber;
-			buf[0] = pnumber;
-
-		    Sendto(sockfd, buf, sizeof buf, 0, p->ai_addr, p->ai_addrlen);
-
-
-			gettimeofday(&stop2, NULL);
-		
-			int a = pause - ((stop2.tv_sec-start2.tv_sec)*1000000 + (stop2.tv_usec-start2.tv_usec));
-			if (a < 0) a = 1;
-
-
-			usleep(a*5000/pps);
-			printf("%d\n", a);
-		}
-		gettimeofday(&stop, NULL);
-
-		printf("%f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
-
-		printf("Sent %d packets\n", pnumber);
-		pnumber=0;
-		usleep(5000);
-	}*/
 	
     freeaddrinfo(servinfo);
     close(sockfd);

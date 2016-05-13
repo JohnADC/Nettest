@@ -134,12 +134,12 @@ int main(int argc, char* argv[]){
 			if (a < 0) a = 1;
 
 
-			usleep(a*5000/pps);
+			usleep(a);
 			printf("%d\n", a);
 		}
 		gettimeofday(&stop, NULL);
 
-		printf("%f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
+		printf("Sent %d packets in %f seconds\n",pps ,(((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0));
 
 		printf("Sent %d packets\n", pnumber);
 		pnumber=0;
