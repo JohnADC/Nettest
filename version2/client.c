@@ -40,9 +40,6 @@ int main(int argc, char* argv[]){
     	commandInfo();
     }
 
-    address = argv[1];
-    pps = atoi(argv[2]);
-
 
     while((ch = getopt(argc, argv, "p:s:t:e")) != -1){
 			switch(ch){
@@ -55,6 +52,9 @@ int main(int argc, char* argv[]){
 					default:	commandInfo();
 			}
 	}
+
+    address = argv[optind];
+    pps = atoi(argv[optind+1]);
 
     if(pps > MAXPACKETNUM){
     	error("error: Maximum pps is 1000000");

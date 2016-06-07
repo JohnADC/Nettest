@@ -1,0 +1,103 @@
+-------------------------
+Thu May 26 17:02:37 UTC 2016
+-------------------------
+Packets per second 100
+Sending time 1.000106
+Number of missed alarms: 0
+Sending time 1.000171
+Number of missed alarms: 0
+Sending time 10.000056
+Number of missed alarms: 0
+Sending time 10.000073
+Number of missed alarms: 0
+Sending time 1.000079
+Number of missed alarms: 0
+Packets per second 500
+Sending time 1.000080
+Number of missed alarms: 0
+Sending time 1.000111
+Number of missed alarms: 0
+Sending time 10.000132
+Number of missed alarms: 0
+Sending time 10.000180
+Number of missed alarms: 0
+Sending time 1.000035
+Number of missed alarms: 0
+Packets per second 1000
+Sending time 1.000043
+Number of missed alarms: 0
+Sending time 1.000077
+Number of missed alarms: 0
+Sending time 10.000060
+Number of missed alarms: 0
+Sending time 10.000038
+Number of missed alarms: 0
+Sending time 1.000038
+Number of missed alarms: 0
+Packets per second 2000
+Sending time 1.000101
+Number of missed alarms: 0
+Sending time 1.000037
+Number of missed alarms: 0
+Sending time 10.010056
+Number of missed alarms: 1
+Sending time 10.001047
+Number of missed alarms: 0
+Sending time 1.001556
+Number of missed alarms: 2
+Packets per second 4000
+Sending time 1.006015
+Number of missed alarms: 8
+Sending time 1.004807
+Number of missed alarms: 8
+Sending time 10.034522
+Number of missed alarms: 37
+Sending time 10.034817
+Number of missed alarms: 22
+Sending time 1.000518
+Number of missed alarms: 0
+Packets per second 6000
+Sending time 1.001652
+Number of missed alarms: 12
+Sending time 0.998499
+Number of missed alarms: 4
+Sending time 10.013293
+Number of missed alarms: 100
+Sending time 10.014953
+Number of missed alarms: 114
+Sending time 1.000823
+Number of missed alarms: 14
+Packets per second 8000
+Sending time 1.003260
+Number of missed alarms: 12
+Sending time 1.005384
+Number of missed alarms: 12
+Sending time 10.097277
+Number of missed alarms: 278
+Sending time 10.105375
+Number of missed alarms: 283
+Sending time 1.008387
+Number of missed alarms: 22
+Packets per second 10000
+Sending time 1.007708
+Number of missed alarms: 18
+Sending time 1.008506
+Number of missed alarms: 37
+Sending time 10.092908
+Number of missed alarms: 307
+Sending time 10.126022
+Number of missed alarms: 431
+Sending time 1.011517
+Number of missed alarms: 49
+Packets per second 12000
+Sending time 1.006296
+Number of missed alarms: 42
+Sending time 1.003312
+Number of missed alarms: 32
+Sending time 10.049731
+Number of missed alarms: 327
+Sending time 10.056123
+Number of missed alarms: 327
+Sending time 1.004141
+Number of missed alarms: 32
+-------------------------
