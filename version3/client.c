@@ -5,6 +5,24 @@
 
 volatile int misses = 0;
 
+int findn(int num)
+{
+    if ( num <= 10 )
+      return 1;
+    if ( num <= 100 )
+      return 2;
+ 	if ( num <= 1000 )
+      return 3;
+    if ( num <= 10000 )
+      return 4;
+    if ( num <= 100000 )
+      return 5;
+    if ( num <= 1000000 )
+      return 6;  
+
+  	return 0;
+}
+
 void missed_alarm(int signum) {
 	    /* we missed a timer signal, so won't be sending packets fast enough!!! */
 	    //write(2, "Missed Alarm!\n", 14);
@@ -86,6 +104,19 @@ int main(int argc, char* argv[]){
     }
 
     
+    /*int n = findn(pps);
+    if(n>3){
+    	bursts = 1000;
+    } else {
+    	bursts = 10;
+    }
+    burst_packets = pps / bursts;
+    int b=bursts;
+    int bp = burst_packets;
+    pause = (MICRO / bursts);*/
+	
+	//OVO JE SVE PREVARA
+
 	double interresult=((pps * packet_size) / (double)SENDBUF);
     bursts = CEILING_POS(interresult);
     int b=bursts;
@@ -170,7 +201,7 @@ int main(int argc, char* argv[]){
 		    
 		    pid_t pid = fork();
 		    if(pid==0){
-
+		    	//burst_packets=bp;
 			    while(burst_packets--){
 				    ++pnumber;
 					buf[0] = pnumber;	
