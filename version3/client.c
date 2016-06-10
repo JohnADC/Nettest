@@ -79,45 +79,47 @@ int main(int argc, char* argv[]){
 
 
     if(pps > MAXPACKETNUM){
-    	error("error: Maximum pps is 1000000");
+    	error("error: Maximum pps is 10000000");
     }
-    if(pps < 10){
-    	error("error: Minimum pps is 10");
+    if(pps < MINPACKETNUM){
+    	error("error: Minimum pps is 1");
     }
     if(!((pps%10) == 0)){
     	error("error: PPS must be divisabl with 10");
     }
-    if(packet_size > MAXBUFF){
-    	error("error: Maximum packet size is 16376");
+    if(packet_size > MAXPACKETSIZE){
+    	error("error: Maximum packet size is 65505");
     }
     if(!((packet_size%4) == 0)){
     	error("error: Packet size must be divisable with 4");	
     }
-    if(packet_size < MINBUFF){
-    	error("error: Minimum packet size is 1");
+    if(packet_size < MINPACKETSIZE){
+    	error("error: Minimum packet size is 4");
     }
     if(sending_time > MAXTIME){
-    	error("error: Maximum sending time is 60s");
+    	error("error: Maximum sending time is 120s");
     }
     if(sending_time < MINTIME){
     	error("error: Minimum sending time is 1s");
     }
 
     
-    /*int n = findn(pps);
+    int n = findn(pps);
     if(n>3){
     	bursts = 1000;
-    } else {
+    } else if(n != 1) {
     	bursts = 10;
+    } else {
+        bursts = 1;
     }
     burst_packets = pps / bursts;
     int b=bursts;
-    int bp = burst_packets;
-    pause = (MICRO / bursts);*/
+    //int bp = burst_packets;
+    pause = (MICRO / bursts);
 	
 	//OVO JE SVE PREVARA
 
-	double interresult=((pps * packet_size) / (double)SENDBUF);
+	/*double interresult=((pps * packet_size) / (double)SENDBUF);
     bursts = CEILING_POS(interresult);
     int b=bursts;
 
@@ -130,7 +132,7 @@ int main(int argc, char* argv[]){
     if((pps * packet_size) < 200000){
     	bursts = 1;
     }
-
+	*/
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -160,10 +162,10 @@ int main(int argc, char* argv[]){
     int* buf;
     int data[3];
     struct timeval start, stop;
-
-    buf = malloc(packet_size * sizeof(int));
     
-    memset(buf, 0, sizeof(&buf));
+    buf = malloc(MAXBUFF * sizeof(int));
+    
+    memset(buf, 0, MAXBUFF * sizeof(int));
     memset(data, 0, sizeof(data));
     
     data[0] = htonl(pps);
@@ -191,34 +193,44 @@ int main(int argc, char* argv[]){
 
 	gettimeofday(&start, NULL);
 
-	printf("st %d b %d bp %d p %d\n", sending_time, bursts, burst_packets, pause);
+	//printf("st %d b %d bp %d p %d\n", sending_time, bursts, burst_packets, pause);
 	
+	pid_t pid;
+
 	while(sending_time--){
 		pnumber = 0;
 		bursts=b;
 		while (bursts--) {
 		    sigwait(&alarm_sig, &signum);
 		    
-		    pid_t pid = fork();
+		    pid = fork();
 		    if(pid==0){
 		    	//burst_packets=bp;
 			    while(burst_packets--){
 				    ++pnumber;
 					buf[0] = pnumber;	
 
-					Sendto(sockfd, buf, sizeof buf, 0, p->ai_addr, p->ai_addrlen);
+					Sendto(sockfd, buf, packet_size, 0, p->ai_addr, p->ai_addrlen);
 			    }
 			    return 0;
 			}
 
 		}
+		while (pid = waitpid(-1, NULL, 0)) {
+		   if (errno == ECHILD) {
+		      break;
+		   }
+		}
 	}
 	
 	gettimeofday(&stop, NULL);
 	
-	printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
-	printf("Number of missed alarms: %d\n", misses);
+
+	//printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
+	//printf("Number of missed alarms: %d\n", misses);
 	
+	printf("%f %d %d\n", (((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0), misses, pps);
+
     freeaddrinfo(servinfo);
     close(sockfd);
 

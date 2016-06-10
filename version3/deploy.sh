@@ -1,5 +1,10 @@
 #!bash /bin/bash
 make
-hcp client pc1:
-hcp test1.sh pc1:
-hcp server pc2:
+client=$1
+server=$2
+hcp client $client:
+hcp ctest.sh $client:
+hcp server $server:
+hcp stest.sh $server:
+
+echo "deployed, hopefully"

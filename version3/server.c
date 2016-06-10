@@ -7,7 +7,7 @@ void printStatistics(int numrcv, int packetnum, int* stat){
 	for(i=1 ; i < numrcv; ++i){
 		if( ! ( *(stat+j) == i ) ){
 			j--;
-			printf("Packet number %d missing\n", i);
+			//printf("Packet number %d missing\n", i);
 		}
 		++j;
 	}
@@ -68,10 +68,12 @@ int main(int argc, char* argv[]){
 		int numrcv=0;
 		int n=0;
 		int buffsize=0, packetnum=0, repeat=0;
+		unsigned int totalpackets=0;
 		int* buf;
 		int* stat;
 		int data[4];
 	    int start=1;
+	    //struct timeval start_t, stop;
 
 	    struct timeval timeout;
 	    timeout.tv_sec=0;
@@ -84,6 +86,7 @@ int main(int argc, char* argv[]){
 		packetnum=ntohl(data[0]);
 		buffsize=ntohl(data[1]);
 		repeat=ntohl(data[2]);
+		int r=repeat;
 
 		stat = malloc(packetnum * sizeof(int));
 		buf = malloc(buffsize * sizeof(int));
@@ -93,17 +96,29 @@ int main(int argc, char* argv[]){
 
 		Sendto(sockfd, &start, sizeof start, 0, (struct sockaddr *)&their_addr, addr_len);
 
+		//gettimeofday(&start_t, NULL);
+
 		while(repeat--){
 			while(n != -1 && numrcv < packetnum){
 			
 			    n = Recvfrom(sockfd, buf, sizeof buf , 0, (struct sockaddr *)&their_addr, &addr_len);
-			    stat[numrcv]=buf[0];
+			    //stat[numrcv]=buf[0];
 			    numrcv++;
 
 			}
-			printStatistics(numrcv, packetnum, stat);
+			
+			totalpackets += numrcv;
+
+			//printStatistics(numrcv, packetnum, stat);
 			numrcv=0;
 		}
+		//gettimeofday(&stop, NULL);
+
+		unsigned int packetslost=((packetnum * r) - totalpackets);
+		//long double aproxtime=(((stop.tv_sec-start_t.tv_sec)*1000000 + (stop.tv_usec-start_t.tv_usec)) / 1000000.0) / r;
+
+		printf("%u %u\n", totalpackets, packetslost);
+
 
 	}	
 	
