@@ -17,14 +17,32 @@ void printStatistics(int numrcv, int packetnum, int* stat){
 	printf("Packets recived: %d\nPackets lost: %d\n", numrcv, packetnum-numrcv);
 }
 
+void commandInfo(){
+	fprintf(stderr,"usage: ./server [-p port]\n");
+    exit(1);
+}
+
 
 int main(int argc, char* argv[]){
 	
 
-    int sockfd;
+    int sockfd, ch;
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr;
     int enable = 1;
+    char *port = PORT;
+
+    if(argc == 0 || argc > 2){
+    	commandInfo();
+    }
+
+    while((ch = getopt(argc, argv, "p:")) != -1){
+			switch(ch){
+					case 'p':	port = optarg;
+								break;
+					default:	commandInfo();
+			}
+	}
 
     socklen_t addr_len;
     memset(&hints, 0, sizeof hints);
@@ -32,7 +50,7 @@ int main(int argc, char* argv[]){
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
     
-    Getaddrinfo(NULL, PORT, &hints, &servinfo);
+    Getaddrinfo(NULL, port, &hints, &servinfo);
     
 	
     // loop through all the results and bind to the first we can
@@ -70,7 +88,6 @@ int main(int argc, char* argv[]){
 		int buffsize=0, packetnum=0, repeat=0;
 		unsigned int totalpackets=0;
 		int* buf;
-		int* stat;
 		int data[4];
 	    int start=1;
 	    //struct timeval start_t, stop;
@@ -88,10 +105,9 @@ int main(int argc, char* argv[]){
 		repeat=ntohl(data[2]);
 		int r=repeat;
 
-		stat = malloc(packetnum * sizeof(int));
 		buf = malloc(buffsize * sizeof(int));
 			
-		timeout.tv_sec=1;
+		timeout.tv_sec=2;
 		Setsockopt (sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
 
 		Sendto(sockfd, &start, sizeof start, 0, (struct sockaddr *)&their_addr, addr_len);
