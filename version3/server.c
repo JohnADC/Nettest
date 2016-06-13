@@ -135,6 +135,7 @@ int main(int argc, char* argv[]){
 
 		printf("%u %u\n", totalpackets, packetslost);
 
+		Sendto(sockfd, &packetslost, sizeof(int), 0, (struct sockaddr *)&their_addr, addr_len);
 
 	}	
 	

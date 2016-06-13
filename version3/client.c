@@ -182,6 +182,7 @@ int main(int argc, char* argv[]){
 	}
 
 	signal(SIGALRM, missed_alarm);
+	signal(SIGCHLD, SIG_IGN);
 
 	sigset_t alarm_sig;
 	int signum;
@@ -222,11 +223,14 @@ int main(int argc, char* argv[]){
 	
 	gettimeofday(&stop, NULL);
 	
+	int packets_lost=0;
+	Recvfrom(sockfd, &packets_lost, sizeof(int) , 0, p->ai_addr, &(p->ai_addrlen));
 
 	//printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
 	//printf("Number of missed alarms: %d\n", misses);
 	
 	printf("%f %d %d\n", (((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0), misses, pps);
+	printf("%d %d\n", (pps-packets_lost), packets_lost);
 
     freeaddrinfo(servinfo);
     close(sockfd);
