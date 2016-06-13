@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
     }
 
 
-    while((ch = getopt(argc, argv, "p:s:t:e")) != -1){
+    while((ch = getopt(argc, argv, "p:s:t:")) != -1){
 			switch(ch){
 					case 'p':	port = optarg;
 								break;
@@ -90,11 +90,8 @@ int main(int argc, char* argv[]){
     if(packet_size > MAXPACKETSIZE){
     	error("error: Maximum packet size is 65505");
     }
-    if(!((packet_size%4) == 0)){
-    	error("error: Packet size must be divisable with 4");	
-    }
     if(packet_size < MINPACKETSIZE){
-    	error("error: Minimum packet size is 4");
+    	error("error: Minimum packet size is 1");
     }
     if(sending_time > MAXTIME){
     	error("error: Maximum sending time is 120s");
