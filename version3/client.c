@@ -159,7 +159,12 @@ int main(int argc, char* argv[]){
     int* buf;
     int data[3];
     struct timeval start, stop;
-    
+    struct timeval timeout;
+	timeout.tv_sec=2;
+	timeout.tv_usec=0;
+
+	Setsockopt (sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+
     buf = malloc(MAXBUFF * sizeof(int));
     
     memset(buf, 0, MAXBUFF * sizeof(int));
@@ -171,7 +176,9 @@ int main(int argc, char* argv[]){
 
     Sendto(sockfd, data, sizeof data, 0, p->ai_addr, p->ai_addrlen);
 
-    Recvfrom(sockfd, &go, sizeof go , 0, p->ai_addr, &(p->ai_addrlen));
+    if((n = Recvfrom(sockfd, &go, sizeof go , 0, p->ai_addr, &(p->ai_addrlen))) == -1){
+    	error("error: server not reached");
+    }
 
     struct itimerval timer;
 	timer.it_interval.tv_sec = timer.it_value.tv_sec = 0;

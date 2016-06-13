@@ -19,6 +19,7 @@
 #include <dirent.h>
 #include <getopt.h>
 #include <sys/time.h>
+#include <sys/wait.h>
 
 
 #define BACKLOG 10
