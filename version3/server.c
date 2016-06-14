@@ -130,10 +130,10 @@ int main(int argc, char* argv[]){
 		}
 		//gettimeofday(&stop, NULL);
 
-		unsigned int long packetslost=(((unsigned long)packetnum * r) - totalpackets);
+		unsigned long int packetslost=(((unsigned long)packetnum * r) - totalpackets);
 		//long double aproxtime=(((stop.tv_sec-start_t.tv_sec)*1000000 + (stop.tv_usec-start_t.tv_usec)) / 1000000.0) / r;
 
-		printf("%u %u\n", totalpackets, packetslost);
+		printf("%u %lu\n", totalpackets, packetslost);
 
 		Sendto(sockfd, &packetslost, sizeof(unsigned long int), 0, (struct sockaddr *)&their_addr, addr_len);
 

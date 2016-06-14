@@ -161,7 +161,7 @@ int main(int argc, char* argv[]){
     int r =sending_time;
     struct timeval start, stop;
     struct timeval timeout;
-	timeout.tv_sec=2;
+	timeout.tv_sec=5;
 	timeout.tv_usec=0;
 
 	Setsockopt (sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
@@ -244,6 +244,9 @@ int main(int argc, char* argv[]){
 	}
 
 	unsigned long int packets_lost=0;
+
+	slepp(1);
+
 	Recvfrom(sockfd, &packets_lost, sizeof(unsigned long int) , 0, p->ai_addr, &(p->ai_addrlen));
 
 	//printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
