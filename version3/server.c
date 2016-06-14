@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
 		int numrcv=0;
 		int n=0;
 		int buffsize=0, packetnum=0, repeat=0;
-		unsigned int totalpackets=0;
+		unsigned long int totalpackets=0;
 		int* buf;
 		int data[4];
 	    int start=1;
@@ -130,12 +130,12 @@ int main(int argc, char* argv[]){
 		}
 		//gettimeofday(&stop, NULL);
 
-		unsigned int packetslost=((packetnum * r) - totalpackets);
+		unsigned int long packetslost=(((unsigned long)packetnum * r) - totalpackets);
 		//long double aproxtime=(((stop.tv_sec-start_t.tv_sec)*1000000 + (stop.tv_usec-start_t.tv_usec)) / 1000000.0) / r;
 
 		printf("%u %u\n", totalpackets, packetslost);
 
-		Sendto(sockfd, &packetslost, sizeof(int), 0, (struct sockaddr *)&their_addr, addr_len);
+		Sendto(sockfd, &packetslost, sizeof(unsigned long int), 0, (struct sockaddr *)&their_addr, addr_len);
 
 	}	
 	

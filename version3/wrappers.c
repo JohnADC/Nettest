@@ -71,6 +71,9 @@ void Getaddrinfo(const char *hostname, const char *service, const struct addrinf
 int Sendto(int sockfd, const void *msg, size_t len, int flags, const struct sockaddr *to, socklen_t tolen){
 	int n;
 	n=sendto(sockfd, msg, len, flags, to, tolen);
+	if(n == ENOBUFS){
+		return n;
+	}
 	if(n == -1){
 		perror("Sendto");
 		exit(1);

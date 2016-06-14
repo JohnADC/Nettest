@@ -41,7 +41,7 @@
 #define DEFAULTTIME 1
 #define MINTIME 1
 
-#define MICRO 1000000L
+#define MICRO 1000000
 
 
 

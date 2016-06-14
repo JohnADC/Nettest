@@ -158,6 +158,7 @@ int main(int argc, char* argv[]){
     int pnumber = 0;
     int* buf;
     int data[3];
+    int r =sending_time;
     struct timeval start, stop;
     struct timeval timeout;
 	timeout.tv_sec=2;
@@ -181,9 +182,14 @@ int main(int argc, char* argv[]){
     }
 
     struct itimerval timer;
-	timer.it_interval.tv_sec = timer.it_value.tv_sec = 0;
-	timer.it_interval.tv_usec = timer.it_value.tv_usec = pause;
-	if (setitimer(ITIMER_REAL, &timer, 0) < 0) {
+    if(pause==1000000){
+    	timer.it_interval.tv_sec = timer.it_value.tv_sec = 1;
+		timer.it_interval.tv_usec = timer.it_value.tv_usec = 0;
+    }else{
+		timer.it_interval.tv_sec = timer.it_value.tv_sec = 0;
+		timer.it_interval.tv_usec = timer.it_value.tv_usec = pause;	
+    }
+    if (setitimer(ITIMER_REAL, &timer, 0) < 0) {
 	    perror("setitimer");
 	    exit(1); 
 	}
@@ -230,14 +236,21 @@ int main(int argc, char* argv[]){
 	
 	gettimeofday(&stop, NULL);
 	
-	int packets_lost=0;
-	Recvfrom(sockfd, &packets_lost, sizeof(int) , 0, p->ai_addr, &(p->ai_addrlen));
+	timer.it_interval.tv_sec = timer.it_value.tv_sec = 0;
+	timer.it_interval.tv_usec = timer.it_value.tv_usec = 0;
+	if (setitimer(ITIMER_REAL, &timer, 0) < 0) {
+	    perror("setitimer");
+	    exit(1); 
+	}
+
+	unsigned long int packets_lost=0;
+	Recvfrom(sockfd, &packets_lost, sizeof(unsigned long int) , 0, p->ai_addr, &(p->ai_addrlen));
 
 	//printf("Sending time %f\n", ((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0);
 	//printf("Number of missed alarms: %d\n", misses);
 	
 	printf("%f %d %d\n", (((stop.tv_sec-start.tv_sec)*1000000 + (stop.tv_usec-start.tv_usec)) / 1000000.0), misses, pps);
-	printf("%d %d\n", (pps-packets_lost), packets_lost);
+	printf("%lu %lu\n", ((unsigned long int)(pps*r)-packets_lost), packets_lost);
 
     freeaddrinfo(servinfo);
     close(sockfd);
