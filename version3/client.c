@@ -113,23 +113,7 @@ int main(int argc, char* argv[]){
     int b=bursts;
     //int bp = burst_packets;
     pause = (MICRO / bursts);
-	
-	//OVO JE SVE PREVARA
 
-	/*double interresult=((pps * packet_size) / (double)SENDBUF);
-    bursts = CEILING_POS(interresult);
-    int b=bursts;
-
-    double justdoit=(MICRO / (double)bursts);	
-    pause = CEILING_POS(justdoit);
-
-    burst_packets = ( SENDBUF / packet_size );
-    
-
-    if((pps * packet_size) < 200000){
-    	bursts = 1;
-    }
-	*/
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
